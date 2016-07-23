@@ -119,4 +119,4 @@ and you'll have:
 All the algorithm templates have been written by me and tested on various competitive-programming platforms like codechef, codeforces, topcoder. I use these while taking part in contests and I have never got WA because of any bug in the above Algorithm-Templates. But if you still find anything wrong, feel free to fork and push! :)
 
 ###Contributing to this repository
-Well as you can see, the above list is by no means complete. The world of Algorithms is huge and Beautiful. Feel free to push template any algorithm that's not in there already.
+Well as you can see, the above list is by no means complete. The world of Algorithms is huge and Beautiful. Feel free to push template for any algorithm that's not in there already.
