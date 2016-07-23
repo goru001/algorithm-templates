@@ -1,0 +1,950 @@
+# gcd of two numbers, Euclid Algorithm
+snippet gcd
+	ll gcd( ll a, ll b )
+	{
+		if((a%b)==0)
+		{
+		     return b;
+		}
+		else
+		{
+		     return gcd( b, a%b );
+		}
+	}
+
+# Modular Division
+snippet moddiv
+	pair<ll,pair<ll,ll> > egcd(ll a, ll b)				//solves ax + by = gcd(a,b) = g
+	{								//returns (g,(x,y))
+		pair<ll,pair<ll,ll> > ret;
+
+		if (a==0)
+		{
+			ret.f = b ;
+			ret.s.f = 0 ;
+			ret.s.s = 1 ;
+		}
+		else
+		{
+			ll g, x, y;
+			pair<ll,pair<ll,ll> > temp = egcd( b%a, a) ;
+			g = temp.f;
+			x = temp.s.f;
+			y = temp.s.s;
+			ret.f = g;
+			ret.s.f = y - (b/a)*x ;
+			ret.s.s = x;
+		}
+
+		return ret;
+	}
+
+	ll modinv(ll den, ll m)
+	{
+		pair<ll,pair<ll,ll> > ans = egcd(den, m) ;
+		if (ans.f == 1)
+		{
+			return (ans.s.f+m) % m ;
+		}
+	}
+
+
+	ll moddiv(ll num, ll den, ll m)		// den and m must be coprime
+	{
+		return (num * modinv(den,m) ) % m ;
+	}
+
+
+# Initial 
+snippet chef
+	#include<bits/stdc++.h>
+	#include<cstdio>
+	#include<cstring>
+	#include<cmath>
+	#include<cstring>
+	#include<chrono>
+	#include<complex>
+	#define endl "\n"
+	#define ll long long int
+	#define vi vector<int>
+	#define vll vector<ll>
+	#define vvi vector < vi >
+	#define pii pair<int,int>
+	#define pll pair<long long, long long>
+	#define mod 1000000007
+	#define inf 1000000000000000001;
+	#define all(c) c.begin(),c.end()
+	#define mp(x,y) make_pair(x,y)
+	#define mem(a,val) memset(a,val,sizeof(a))
+	#define eb emplace_back
+	#define f first
+	#define s second
+	
+	using namespace std;
+	int main()
+	{
+	std::ios::sync_with_stdio(false);
+	int T;
+	cin>>T;
+	while(T--)
+	{
+	
+	}
+	return 0;
+	}
+
+#Timing
+snippet time
+	std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+	start = std::chrono::high_resolution_clock::now();
+	/*
+	Code goes here
+	*/
+	end = std::chrono::high_resolution_clock::now();
+	ll elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
+	cout << "\nElapsed Time: " << elapsed_time << "ms\n";
+
+#Binary Search for awesome questions
+snippet bs
+	ll bsearch(ll low, ll high)
+	{
+
+		if (low >= high) {
+		   return low;
+		}
+
+		ll mid = low + (high-low)/2;
+
+		bool condition =           			//test for set of 2 elements, no yes! if wrong, change mid
+
+		condition ? low = mid : high = mid-1 ;          // maintain the invariant [low,high)
+								// other case, low = mid+1 : high = mid , invariant is (low,high]
+		return bsearch(low,high);
+	}
+
+#Graph problems initial code
+snippet graph
+	#include<bits/stdc++.h>
+	#include<cstdio>
+	#include<cstring>
+	#include<cmath>
+	#include<cstring>
+	#include<complex>
+	#include<chrono>
+	#define endl "\n"
+	#define ll long long int
+	#define vi vector<int>
+	#define vll vector<ll>
+	#define vvi vector < vi >
+	#define pii pair<int,int>
+	#define pll pair<long long, long long>
+	#define mod 1000000007
+	#define inf 1000000000000000001;
+	#define all(c) c.begin(),c.end()
+	#define mp(x,y) make_pair(x,y) 
+	#define mem(a,val) memset(a,val,sizeof(a))
+	#define eb emplace_back
+	#define f first
+	#define s second
+	
+	using namespace std;
+
+	const int MX = 100000;			// maximum no. of nodes in graph
+
+	int n;
+	vector< pair<int, int> > G[MX+1];		// adjacency list, (edge,cost) pair
+
+	int main()
+	{
+
+	std::ios::sync_with_stdio(false);
+
+	int T;
+	cin>>T;
+
+	while(T--)
+	{
+
+	mem(G,0);
+	mem(vis,0);
+
+	int m;					// no. of edges
+	cin>>n>>m;
+
+	for(int i = 1 ; i <= m ; i++)
+	{
+
+	int u,v;
+	int c;
+	cin>>u>>v>>c;			// 1 based indexing of nodes
+	
+	G[u].eb(v,c);
+	G[v].eb(u,c);
+
+	}
+
+	}
+	return 0;
+	}
+
+
+# Euler-Walk
+snippet ewalk
+	// convert rooted tree to array
+	// 0 - white(not yet visited), 1- grey(currently being explored), 2-black(explored completely )
+
+	vector<int> color(MX+1);
+	vector<int> parent(MX+1);
+
+	int tt=0;
+	vector<int> tin(MX+1) ; 	// v was visited at tin[v] time
+	vector<int> tout(MX+1);		// v was left at tout[v] time
+	vector<int> vis(MX+1);		// at time tt, vis[tt] node was visited
+
+	void dfs(int v)
+	{
+		color[v] = 1 ;		// grey
+	
+		vis[tt] = v ;
+		tin[v] = tt++ ;
+		for( auto& u : G[v] )
+		{
+			if ( color[u] == 0 )		// white
+			{
+				dfs(u) ;
+				parent[u] = v ;
+			}
+	
+		}
+		tout[v] = tt ;
+	
+		color[v] = 2 ;		// black
+	}
+
+	// vis is the array of the rooted tree
+ 
+
+
+
+#For geometry problems
+snippet geometry
+	typedef complex<double> point;
+	#define x real()
+	#define y imag()
+	
+	double dot(point a,point b){ return (conj(a)*b).x ; }
+	double cross(point a,point b){ return (conj(a)*b).y ; }
+
+	double dist(point a, point b){ return abs(a-b); }			//distance btw points a and b
+
+	double dist(point a, point b, point c, bool issegment = false){		//distance btw line ab and point c
+		double d = cross(b-a,c-a)/dist(a,b) ;
+		if( issegment == true )						// if line is a segment, issegment is true
+		{
+			double dt1 = dot(b-a,c-b) ;
+			if( dt1 > 0 )  return dist(b,c);
+			double dt2 = dot(a-b,c-a) ;
+			if( dt2 > 0 )  return dist(a,c);
+		}
+
+		return abs(d) ;
+	}
+
+	bool cmp(point& a, point& b)
+	{
+		if ( a.x == b.x )
+		{
+			return a.y < b.y ;
+		}
+		else
+		{
+			return a.x < b.x ;
+		}
+	}
+
+	template<class T>
+	istream& operator>> (istream& is, complex<T>& p){
+	   T value;
+	   is >> value;
+	   p.real(value);
+	   is >> value;
+	   p.imag(value);
+	   return is;
+	}
+
+
+# Area of polygon whose perimeter points are given in order in array
+snippet polygon
+	vector< point > p;
+
+	double polyarea(){
+		double area = 0;
+		int n = p.size();
+		for(int i=1; i+1<n ; i++ )
+		{
+			point v1 = p[i] - p[0] ;	//taking 0th point as origin
+			point v2 = p[i+1] - p[0] ;
+			area += cross(v1,v2) ;
+		}
+		return abs(area/2.0);
+	}
+
+
+# Convex Hull - Returns vector of points belonging to hull in anti-clockwise order.
+snippet hull
+	typedef complex<double> point;
+	#define x real()
+	#define y imag()
+
+	double dot(point a,point b){ return (conj(a)*b).x ; }
+	double cross(point a,point b){ return (conj(a)*b).y ; }
+
+	double dist(point a, point b){ return abs(a-b); }			//distance btw points a and b
+
+	double dist(point a, point b, point c, bool issegment = false){		//distance btw line ab and point c
+		double d = cross(b-a,c-a)/dist(a,b) ;
+		if( issegment == true )						// if line is a segment, issegment is true
+		{
+			double dt1 = dot(b-a,c-b) ;
+			if( dt1 > 0 )  return dist(b,c);
+			double dt2 = dot(a-b,c-a) ;
+			if( dt2 > 0 )  return dist(a,c);
+		}
+
+		return abs(d) ;
+	}
+
+	template<class T>
+	istream& operator>> (istream& is, complex<T>& p){
+	   T value;
+	   is >> value;
+	   p.real(value);
+	   is >> value;
+	   p.imag(value);
+	   return is;
+	}
+
+	bool cmp(point& a, point& b)
+	{
+		if ( a.x == b.x )
+		{
+			return a.y < b.y ;
+		}
+		else
+		{
+			return a.x < b.x ;
+		}
+	}
+
+
+	vector<point> hull(vector<point> P)
+	{
+	   int n = P.size() ;
+	   int k = 0;
+	   vector<point> H(2*n) ;
+
+	   sort( all(P), cmp );
+
+	   for (int  i = 0;  i < n;  i++) {			// lower monotone chain
+			while( k>=2 && cross( H[k-1]-H[k-2], P[i]-H[k-2] ) <= 0)
+					k--;
+			H[k++] = P[i] ;
+	   }
+
+	   for (int  i = n-2, t=k+1;  i >= 0;  i--) {		// upper monotone chain
+			while( k>=t && cross( H[k-1]-H[k-2], P[i]-H[k-2] ) <= 0)
+					k--;
+			H[k++] = P[i];
+	   }
+
+	   H.resize(k-1);
+	   return H;
+	}
+
+
+
+# Classic Segment Tree
+snippet cseg
+	void build(int id = 1,int l = 0,int r = n)         //root index 1,children 2x,2x+1
+	{						   // root = [0,n)
+		if( l+1 == r )
+		{
+		    s[id] = a[l];			// put values in leaf nodes
+		    return;				// comes from array
+		}					   
+		
+		ll mid = l + (r-l)/2;
+		build( id*2, l, mid);			// interval = [left,right)
+		build( id*2+1, mid, r);
+		
+		s[id]= [id * 2] + s[id * 2 + 1];	// put values in non-leaf nodes
+							// comes from child nodes
+	}
+
+	void modify(int p, int x, int id=1, int l=0, int r=n)    // call modify(p,x)
+	{
+					    //x is the value to which a[p] is changed
+		s[id] += x-a[p] ;  		// change the value of the segtree node
+
+		if( l+1 == r){			// l=r-1=p
+		   a[p]=x;                 // change the value in the array
+		   return;		
+		}
+
+		ll mid = l + (r-l)/2;
+		
+		if( p < mid )
+		{
+		   modify(p, x, id*2, l, mid);	
+		}
+		else
+		{
+		   modify(p, x, id*2+1, mid, r);
+		}
+		
+	}
+
+	ll query(int x,int y,int id=1,int l=0,int r=n){		//verify return type
+								// call query(l,r)
+		if( x >= r or l >= y )  return 0;	// no overlap
+
+		if( x <= l and r <= y )  return s[id];      // complete overlap
+
+		ll mid = l + (r-l)/2;			  // partial overlap
+		return query(x, y, id*2, l, mid) + query(x, y, id*2+1, mid, r);
+
+	}
+
+
+# 2-D Segment tree
+snippet 2dseg
+	#define N 1000
+	#define M 1000
+
+	int t[4*N][4*M] = {0} ;								// tree
+	int a[N][M] = {0};								// n*m matrix
+	int n,m;
+
+
+	void buildy(int idx, int lx, int rx, int idy=1, int ly=0, int ry=m-1)		// id starts from 1
+	{										// [ly,ry]
+
+		if ( ly == ry )
+		{
+			if ( lx == rx)
+			{
+				t[idx][idy] = a[lx][ly] ;
+			}
+			else
+			{
+				t[idx][idy] = t[2*idx][idy] + t[2*idx+1][idy] ;
+			}
+		}
+		else
+		{
+			int my = ly + (ry - ly)/2 ;
+			buildy( idx, lx, rx, 2*idy, ly, my ) ;
+			buildy( idx, lx, rx, 2*idy+1, my+1, ry ) ;
+			t[idx][idy] = t[idx][2*idy] + t[idx][2*idy+1] ;
+		}
+
+	}
+
+	void buildx(int idx=1, int lx=0, int rx=n-1)		// id starts from 1
+	{							// call buildx(), [l,r]
+		if ( lx != rx )
+		{
+			int mx = lx + ( rx - lx )/2 ;
+			buildx( 2*idx, lx, mx ) ;				// [lx,mx] , left child
+			buildx( 2*idx+1, mx+1, rx ) ;				// [mx+1,rx] , right child
+		}
+		buildy( idx, lx, rx, 1, 0, m-1 ) ;
+	}
+
+
+	ll queryy(int idx, int idy , int tly , int tryy , int ly, int ry)
+	{
+		if ( ly > ry || ly > tryy || ry < tly )			// no overlap
+		{
+			return 0;
+		}
+		if ( ly <= tly && tryy <= ry )				// complete overlap
+		{
+			return t[idx][idy] ;
+		}
+
+		int tmy = tly + (tryy-tly)/2 ;
+		return queryy(idx, 2*idy, tly, tmy, ly, min(tmy,ry) ) + queryy(idx, 2*idy+1, tmy+1, tryy, max(ly,tmy+1), ry ) ;
+	}
+
+	ll queryx( int lx, int rx, int ly, int ry , int idx=1 , int tlx=0 , int trx=n-1  )	// query in rectangle (lx,ly) to (rx,ry)
+	{											// call queryx(x1,x2,y1,y2) where (x1,y1)=upper-left,(x2,y2)=lower-right cood.
+		if ( lx > rx || lx > trx || rx < tlx )		// no overlap
+		{
+			return 0;
+		}
+	
+		if ( lx <= tlx && trx <= rx )			// complete overlap
+		{
+			return queryy(idx, 1, 0, m-1, ly, ry) ;
+		}
+	
+		int tmx = tlx + (trx-tlx)/2 ;
+		return queryx( lx, min(rx,tmx), ly, ry, 2*idx, tlx, tmx ) + queryx( max(lx,tmx+1), rx, ly, ry, 2*idx+1, tmx+1, trx ) ;
+	
+	}
+
+	void updatey( int x, int y, int value, int idx, int lx, int rx, int idy=1, int ly=0, int ry=m-1 )
+	{
+		if ( ly == ry )
+		{
+			if ( lx == rx )
+			{
+				t[idx][idy] = value ;
+			}
+			else
+			{
+				t[idx][idy] = t[2*idx][idy] + t[2*idx+1][idy] ;
+			}
+		}
+		else
+		{
+			int my = ly + (ry - ly)/2 ;
+			if ( y <= my )
+			{
+				updatey( x, y, value, idx, lx, rx, 2*idy, ly, my ) ;
+			}
+			else
+			{
+				updatey( x, y, value, idx, lx, rx, 2*idy+1, my+1, ry ) ;
+			}
+	
+			t[idx][idy] = t[idx][2*idy] + t[idx][2*idy+1] ;
+		}
+
+	}
+
+	void updatex(int x, int y, int value, int idx=1, int lx=0, int rx=n-1)		// call updatex(x,y,value) if a[x][y] changes to value.
+	{
+		if ( lx != rx )
+		{
+			int mx = lx + (rx-lx)/2 ;
+			if ( x <= mx )
+			{
+				updatex( x, y, value, 2*idx, lx, mx ) ;
+			}
+			else
+			{
+				updatex( x, y, value, 2*idx+1, mx+1, rx ) ;
+			}
+		}
+	
+		updatey( x, y, value, idx, lx, rx, 1, 0, m-1 ) ;
+	}
+	// assign values to n( no. of rows ), m( no. of columns ), array a! And then call build!
+
+
+
+#Disjoint Set DataStructure
+snippet dsu
+	map< ll,ll > parent; 		// reserve space for map if n > 10000
+	map< ll,ll > urank;
+
+	void create(ll x)
+	{
+		parent[x] = x ;
+		urank[x] = 0 ; 		// rank = no. of nodes in its subtree
+	}
+
+	ll find(ll x)
+	{
+		if( parent[x] != x )	//path compression
+		{
+			parent[x] = find(parent[x]) ;
+		}
+		return parent[x];
+	}
+
+	void merge(ll x, ll y)
+	{
+		ll xroot = find(x);
+		ll yroot = find(y);
+
+		if( urank[xroot] <= urank[yroot] )	// Union by rank
+		{
+			parent[xroot] = yroot ;
+			urank[yroot] = urank[yroot] + urank[xroot] ;
+		}
+		else
+		{
+			parent[yroot] = xroot;
+			urank[xroot] = urank[xroot] + urank[yroot] ;
+		}
+	}
+
+# Bigint in c++
+snippet bigint
+	struct bigint{
+	  static const int LEN = 60;
+	  static const int BIGMOD = 10000;
+
+	  int s;			// sign of big integer
+	  int vl, v[LEN];	// vl is length of v array
+
+	  bigint() : s(1) { vl = 0; }   // eg. bigint x;
+	  
+	  bigint(long long a) {			// eg. bigint x(a);
+		s = 1; vl = 0;
+		if (a < 0) { s = -1; a = -a; }
+		while (a) {
+		  push_back(a % BIGMOD);
+		  a /= BIGMOD;
+		}
+	  }
+	  
+	  bigint(string str) {			// eg. bigint x(str);
+		s = 1; vl = 0;
+		int stPos = 0, num = 0;
+		if (!str.empty() && str[0] == '-') {
+		  stPos = 1;
+		  s = -1;
+		}
+		for (int i=str.length()-1, q=1; i>=stPos; i--) {
+		  num += (str[i] - '0') * q;
+		  if ((q *= 10) >= BIGMOD) {
+			push_back(num);
+			num = 0; q = 1;
+		  }
+		}
+		if (num) push_back(num);
+	  }
+
+	  int len() const {
+		return vl;
+	  }
+	  
+	  bool empty() const { return len() == 0; }
+	  
+	  void push_back(int x) {
+		v[vl++] = x;
+	  }
+	  
+	  void pop_back() {
+		vl--;
+
+	  }
+	  
+	  int back() const {
+		return v[vl-1];
+	  }
+	  
+	  void n() {
+		while (!empty() && !back()) pop_back();
+	  }
+	  
+	  void resize(int nl) {
+		vl = nl;
+		memset(v,0,sizeof(int)*vl);
+	  }
+
+	  void print() const {
+		if (empty()) { putchar('0'); return; }
+		if (s == -1) putchar('-');
+		printf("%d", back());
+		for (int i=len()-2; i>=0; i--) printf("%.4d",v[i]);
+	  }
+	  
+	  friend std::ostream& operator << (std::ostream& out, const bigint &a) {
+		if (a.empty()) { out << "0"; return out; } 
+		if (a.s == -1) out << "-";
+		out << a.back();
+		for (int i=a.len()-2; i>=0; i--) {
+		  char str[10];
+		  snprintf(str, 5, "%.4d", a.v[i]);
+		  out << str;
+		}
+		return out;
+	  }
+
+	  int compare(const bigint &b)const {
+		if (s != b.s) return s - b.s;
+		if (s == -1) return -(-*this).compare(-b);
+		if (len() != b.len()) return len()-b.len();//int
+		for (int i=len()-1; i>=0; i--)
+		  if (v[i]!=b.v[i]) return v[i]-b.v[i];
+		return 0;
+	  }
+
+	  bool operator < (const bigint &b)const{ return compare(b)<0; }
+	  bool operator <= (const bigint &b)const{ return compare(b)<=0; }
+	  bool operator == (const bigint &b)const{ return compare(b)==0; }
+	  bool operator != (const bigint &b)const{ return compare(b)!=0; }
+	  bool operator > (const bigint &b)const{ return compare(b)>0; }
+	  bool operator >= (const bigint &b)const{ return compare(b)>=0; }
+
+	  bigint operator - () const {
+		bigint r = (*this);
+		r.s = -r.s;
+		return r;
+	  }
+	  bigint operator + (const bigint &b) const {
+		if (s == -1) return -(-(*this)+(-b));
+		if (b.s == -1) return (*this)-(-b);
+		bigint r;
+		int nl = max(len(), b.len());
+		r.resize(nl + 1);
+		for (int i=0; i<nl; i++) {
+		  if (i < len()) r.v[i] += v[i];
+		  if (i < b.len()) r.v[i] += b.v[i];
+		  if(r.v[i] >= BIGMOD) {
+			r.v[i+1] += r.v[i] / BIGMOD;
+			r.v[i] %= BIGMOD;
+		  }
+		}
+		r.n();
+		return r;
+	  }
+	  bigint operator - (const bigint &b) const {
+		if (s == -1) return -(-(*this)-(-b));
+		if (b.s == -1) return (*this)+(-b);
+		if ((*this) < b) return -(b-(*this));
+		bigint r;
+		r.resize(len());
+		for (int i=0; i<len(); i++) {
+		  r.v[i] += v[i];
+		  if (i < b.len()) r.v[i] -= b.v[i];
+		  if (r.v[i] < 0) {
+			r.v[i] += BIGMOD;
+			r.v[i+1]--;
+		  }
+		}
+		r.n();
+		return r;
+	  }
+	  bigint operator * (const bigint &b) {
+		bigint r;
+		r.resize(len() + b.len() + 1);
+		r.s = s * b.s;
+		for (int i=0; i<len(); i++) {
+		  for (int j=0; j<b.len(); j++) {
+			r.v[i+j] += v[i] * b.v[j];
+			if(r.v[i+j] >= BIGMOD) {
+			  r.v[i+j+1] += r.v[i+j] / BIGMOD;
+			  r.v[i+j] %= BIGMOD;
+			}
+		  }
+		}
+		r.n();
+		return r;
+	  }
+	  bigint operator / (const bigint &b) {
+		bigint r;
+		r.resize(max(1, len()-b.len()+1));
+		int oriS = s;
+		bigint b2 = b; // b2 = abs(b)
+		s = b2.s = r.s = 1;
+		for (int i=r.len()-1; i>=0; i--) {
+		  int d=0, u=BIGMOD-1;
+		  while(d<u) {
+			int m = (d+u+1)>>1;
+			r.v[i] = m;
+			if((r*b2) > (*this)) u = m-1;
+			else d = m;
+		  }
+		  r.v[i] = d;
+		}
+		s = oriS;
+		r.s = s * b.s;
+		r.n();
+		return r;
+	  }
+	  bigint operator % (const bigint &b) {
+		return (*this)-(*this)/b*b;
+	  }
+	};
+
+
+# Suffix Array and LCP Array
+snippet suffix
+	//suffix-array starts
+	struct node{
+		int sortindex[2];
+		int index;
+	};
+	int n,step;
+	map<int,int> smap;
+	vector<int> sarr;	//suffix-array
+	vector< vector<int> > rem(20);
+	bool cmp( node& a, node& b)
+	{
+		return a.sortindex[0] == b.sortindex[0] ? ( a.sortindex[1] < b.sortindex[1] ? 1 : 0 ) : ( a.sortindex[0] < b.sortindex[0] ? 1 : 0 ) ;
+	}
+
+	void suffix(string s)	//call suffix(string)
+	{
+		n = s.length();
+		sarr.reserve(n);
+		for (int i = 0; i < 20; i++)
+		{
+			rem[i].reserve(n);
+		}
+
+		node sa[n];
+		step=1;
+		int count=1;
+		for( int i = 0; i < n; i++)
+		{
+			rem[0][i] = s[i] - 'a';
+		}
+
+		for( ; count>>1 < n ; step++,count<<=1 )
+		{
+			for(int i=0 ; i<n ; i++)
+			{
+				sa[i].sortindex[0] = rem[step-1][i];
+				sa[i].sortindex[1] = i+count < n ? rem[step-1][i+count] : -1;
+				sa[i].index = i;
+			}
+			sort(sa, sa+n, cmp);
+			for(int i=0; i<n; i++)
+			{
+				rem[step][sa[i].index] = (i>0 && sa[i-1].sortindex[0]==sa[i].sortindex[0] && sa[i-1].sortindex[1]==sa[i].sortindex[1]) ? rem[step][sa[i-1].index] : i;
+			}
+		}
+
+		for (int  i = 0;  i < n;  i++) {
+			smap[rem[step-1][i]]=i;
+		}
+
+		int j=0;
+		for(auto& i : smap){
+		  sarr[j++] = i.second;
+		}
+
+	}
+
+
+	int lcp(int x, int y)		//length of lcp of suffixes starting at x and y
+	{
+		int k, ans=0;		// lcp(x,y) = min[lcp(x,x+1),lcp(x+1,x+2),lcp(x+2,x+3),....,lcp(y-1,y)]
+
+		if (x==y) {				// so, use rmq if there are too many queries
+			return n-x;
+		}
+
+		for(k=step-1; k>=0 && x<n && y<n; k--)
+		{
+			if (rem[k][x] == rem[k][y]) {
+				x += 1<<k;
+				y += 1<<k;
+				ans+= 1<<k;
+			}
+		}
+
+		return ans;
+	}
+	//suffix array ends
+
+# Binomial Coefficients 
+snippet binomial1
+	pair<ll,pair<ll,ll> > egcd(ll a, ll b)				//solves ax + by = gcd(a,b) = g; 
+	{													//returns (g,(x,y))
+		pair<ll,pair<ll,ll> > ret;
+	
+		if (a==0)
+		{
+			ret.f = b ;
+			ret.s.f = 0 ;
+			ret.s.s = 1 ;
+		}
+		else
+		{
+			ll g, x, y;
+			pair<ll,pair<ll,ll> > temp = egcd( b%a, a) ;
+			g = temp.f;
+			x = temp.s.f;
+			y = temp.s.s;
+			ret.f = g;
+			ret.s.f = y - (b/a)*x ;
+			ret.s.s = x;
+		}
+	
+		return ret;
+	}
+
+	ll modinv(ll den, ll m)			// den and m must be coprime
+	{
+		pair<ll,pair<ll,ll> > ans = egcd(den, m) ;
+		if (ans.f == 1)
+		{
+			return (ans.s.f+m) % m ;
+		}
+	}
+
+
+	ll moddiv(ll num, ll den, ll m)
+	{
+		return (num * modinv(den,m) ) % m ;
+	}
+
+
+	vll fact;
+	void C( int n, ll m)		// n must be less than m
+	{
+		fact.reserve(n+1);
+		fact[0] = 1;
+		vll num(n+1,1);  // n*(n-1)*(n-2).....(n-k+1)
+		for (int i = 0; i<n ; i++)
+		{
+			num[i+1] = (num[i]*(n-i)) % m ;
+		}
+	
+		vll den(n+1,1);   //k!
+		for (int i = 1; i <= n; i++)
+		{
+			den[i] = (den[i-1]*i) % m ;
+		}
+	
+		for (int i = 1; i <= n; i++)
+		{
+			fact[i] = moddiv(num[i], den[i], m);
+		}
+	}
+
+# nCr%p if p is small
+snippet binomial2
+	ll dp(int n, int r, ll p)
+	{
+		ll memo[r+1];
+		mem(memo,0);
+		
+		memo[0] = 1;
+		
+		for (int i = 1; i <= n; i++)
+		{
+			for (int j = min(i,r); j > 0; j--)
+			{
+				memo[j] = (memo[j] + memo[j-1]) % p ;
+			}
+		}
+		return memo[r];
+	}
+
+	ll C(ll n, ll r, ll p)			 // p is small prime
+	{
+		if (r==0)
+		{
+			return 1;
+		}
+		if (r>n)		//degenerate case
+		{
+			return 0;
+		}
+		
+		int nd = n%p;
+		int rd = r%p;
+		
+		return ( C(n/p, r/p, p)*dp(nd, rd, p) )%p;
+		
+	}
+ 

@@ -1,0 +1,27 @@
+Index:
+
+Binary Search :  bs
+Bigint Arithmetic : bigint
+nCr % m  : 
+			binomial1 = O(nlog(no. of digits in n)), N MUST BE LESS THAN M [finds nCr for all 0<=r<=n in fact vector] (M IS LARGE Prime)  // Modular Division - Euclid Extended theorem 
+			binomial2 = O(m^2logn), N is greater than M. (M IS SMALL)  // Lucas theorem
+
+Classic Segment Tree : cseg
+2-D Segment Tree : 2dseg
+
+Convex Hull : hull              // Returns vector of points belonging to hull in anti-clockwise order.
+
+Disjoint Set datastructure : dsu
+
+Euler Walk (Convert a rooted tree into array)(write out the vertices in order of their visiting by dfs)(IMP: subtree of any vertex is a subsegment of that permutation)  :  ewalk
+
+Graph problems initial code : graph
+Geometry problems initial code : geometry
+
+Modular-Division : moddiv 
+
+Area of any polygon whose points are given : polygon
+
+Suffix array and LCP array : suffix
+
+Time Elapsed : time
