@@ -110,9 +110,9 @@ and you'll have:
       					
       					Gretest Common Divisor(Euclid Algorithm) : gcd
 
-                                                            CodeChef Template : chef
+                        CodeChef Template : chef
                 
-                                                            Graph problems initial code : graph
+                        Graph problems initial code : graph
 
 
 ###Bugs
